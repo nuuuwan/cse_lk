@@ -1,4 +1,3 @@
-
 name: Text, Build and Upload to PyPi
 
 on:
@@ -59,4 +58,3 @@ jobs:
       with:
         user: ${{ secrets.PYPI_USERNAME }}
         password: ${{ secrets.PYPI_PASSWORD }}
-        
