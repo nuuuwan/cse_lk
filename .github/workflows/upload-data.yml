@@ -1,5 +1,4 @@
-
-name: Text, Build and Upload to PyPi
+name: Upload Data
 
 on: workflow_dispatch
 
