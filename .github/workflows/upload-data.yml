@@ -54,4 +54,4 @@ jobs:
         echo "* $(date)" >> update.log
         git add .
         git commit -m "Updated data $(date)"
-        git push origin main
+        git push origin data
