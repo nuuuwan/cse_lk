@@ -43,8 +43,7 @@ jobs:
     - name: Checkout repo branch data
       uses: actions/checkout@v2
       with:
-        repository: nuuuwan/cse_lk
-        ref: data
+        ref: 'data'
         token: "${{ secrets.REPO_DATA_TOKEN}}"
 
     - name: Copy data, and push to repo branch data
