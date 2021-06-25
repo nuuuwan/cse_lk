@@ -1,5 +1,4 @@
 """Scrape."""
-import os
 import time
 
 from selenium import webdriver
@@ -8,10 +7,9 @@ from bs4 import BeautifulSoup
 from PIL import Image
 
 from utils.cache import cache
-from utils import dt, timex, tsv, www, jsonx
+from utils import timex, jsonx
 
 from cse_lk import _constants
-from cse_lk import _utils
 from cse_lk._utils import log
 
 
@@ -114,10 +112,12 @@ def _parse(html, ss_image_1day_file, ss_image_1year_file):
         ]
     }
 
+
 def get_daily_blurb_info():
     """Get daily blurb info."""
     html, ss_image_1day_file, ss_image_1year_file = _scrape()
     return _parse(html, ss_image_1day_file, ss_image_1year_file)
+
 
 def dump_daily_blurb():
     ut = timex.get_unixtime()

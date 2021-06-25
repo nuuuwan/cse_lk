@@ -125,3 +125,8 @@ def get_current_daily_summary(ut):
     )
 
     return sorted_extended
+
+
+
+if __name__ == '__main__':
+    dump_daily_summary()
