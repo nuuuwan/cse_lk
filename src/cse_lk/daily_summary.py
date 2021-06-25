@@ -1,14 +1,20 @@
 """Scrape."""
+import os
+
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from bs4 import BeautifulSoup
 
 from utils.cache import cache
-from utils import dt, timex, tsv
+from utils import dt, timex, tsv, www
 
 from cse_lk import _constants
 from cse_lk import _utils
 from cse_lk._utils import log
+
+
+def _get_daily_summary_file_name(date_id):
+    return '/tmp/cse_lk.daily_summary.%s.tsv' % date_id
 
 
 @cache(_constants.CACHE_NAME, _constants.CACHE_TIMEOUT)
@@ -72,7 +78,7 @@ def _parse_html(html):
             'delta_price': dt.parse_float(delta_price),
             'delta_price_p': dt.parse_float(delta_price_p),
         })
-    daily_summary_file_name = '/tmp/cse_lk.daily_summary.%s.tsv' % date_id
+    daily_summary_file_name = _get_daily_summary_file_name(date_id)
     tsv.write(daily_summary_file_name, daily_summary)
     log.info(
         'Parsed %d companies and saved to %s',
@@ -82,7 +88,7 @@ def _parse_html(html):
     return daily_summary
 
 
-def dump():
+def dump_daily_summary():
     """Dump daily summary."""
     html = _scrape_html()
     log.info(
@@ -91,3 +97,35 @@ def dump():
         _constants.URL_DAILY_SUMMARY,
     )
     return _parse_html(html)
+
+
+def get_current_daily_summary(ut):
+    """Get daily summary."""
+    date_id = timex.format_time(ut, '%Y%m%d')
+    url = os.path.join(
+        'https://raw.githubusercontent.com',
+        'nuuuwan/cse_lk/data',
+        'cse_lk.daily_summary.{date_id}.tsv'.format(date_id=date_id),
+    )
+    if not www.exists(url):
+        log.warn('No data for {date_id}'.format(date_id=date_id))
+        return None
+
+    current_daily_summary = www.read_tsv(url)
+
+    def _extend(row):
+        price_previous_close = dt.parse_float(row['price_previous_close'])
+        delta_price = dt.parse_float(row['delta_price'])
+        if not price_previous_close:
+            row['p_delta_price'] = 0
+        else:
+            row['p_delta_price'] = delta_price / price_previous_close
+        return row
+
+    with_extended = list(map(_extend, current_daily_summary))
+    sorted_extended = sorted(
+        with_extended,
+        key=lambda row: row['p_delta_price'],
+    )
+
+    return sorted_extended
