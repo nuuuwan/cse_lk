@@ -23,6 +23,8 @@ def _scrape():
 
     browser.set_window_size(1500, 1500)
     browser.execute_script('window.scrollTo(0, 500)')
+
+    time.sleep(4)
     ss_image_1day_file = '/tmp/tmp.cse_lk.blurb.1day.ss.png'
     browser.save_screenshot(ss_image_1day_file)
     log.info('Saved ss to %s', ss_image_1day_file)
@@ -33,8 +35,8 @@ def _scrape():
     browser.find_element_by_xpath(
       "//select[@id='snpDateRange']/option[text()='One year']"
     ).click()
-    time.sleep(2)
 
+    time.sleep(4)
     ss_image_1year_file = '/tmp/tmp.cse_lk.blurb.1year.ss.png'
     browser.save_screenshot(ss_image_1year_file)
     log.info('Saved ss to %s', ss_image_1year_file)
