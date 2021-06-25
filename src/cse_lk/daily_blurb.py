@@ -62,7 +62,7 @@ def _parse(html, ss_image_1day_file, ss_image_1year_file):
         return {
             'value': value,
             'change': change,
-            'p_change': p_change,
+            'p_change': p_change / 100.0,
         }
 
     index_summary = {
