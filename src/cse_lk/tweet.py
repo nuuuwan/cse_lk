@@ -60,10 +60,6 @@ def _tweet():
         rendered_highlights=rendered_highlights,
     )
 
-    print(tweet_text)
-    print(len(tweet_text))
-    return
-
     twtr = twitter.Twitter.from_args()
     twtr.tweet(
         tweet_text=tweet_text,
