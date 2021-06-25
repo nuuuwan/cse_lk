@@ -9,7 +9,7 @@ class TestScrape(unittest.TestCase):
 
     def test_scrape(self):
         """Test."""
-        _daily_summary = daily_summary.dump()
+        _daily_summary = daily_summary.dump_daily_summary()
         self.assertGreater(len(_daily_summary), 100)
         self.assertIn('name', _daily_summary[0])
 

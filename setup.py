@@ -6,11 +6,6 @@ DIST_NAME = 'cse_lk'
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
-requirements = []
-with open('requirements.txt') as fin:
-    for line in fin.readlines():
-        requirements.append(line.strip())
-
 IS_PRE_RELEASE = True
 MAJOR, MINOR, PATCH = 1, 0, 0
 if IS_PRE_RELEASE:
@@ -40,7 +35,12 @@ setuptools.setup(
     packages=setuptools.find_packages(where="src"),
     python_requires=">=3.6",
 
-    install_requires=requirements,
+    install_requires=[
+        'selenium',
+        'utils-nuuuwan',
+        'bs4'
+        'pillow',
+    ],
     test_suite='nose.collector',
     tests_require=['nose'],
 )

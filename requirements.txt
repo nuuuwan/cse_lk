@@ -1,3 +1,4 @@
 selenium
 utils-nuuuwan
 bs4
+pillow

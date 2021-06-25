@@ -6,6 +6,8 @@ from cse_lk import daily_summary
 
 
 def _tweet():
+    daily_blurb_info = get_daily_blurb_info()
+
     ut = timex.get_unixtime()
     current_daily_summary = daily_summary.get_current_daily_summary(ut)
     if not current_daily_summary:
@@ -48,6 +50,7 @@ def _tweet():
         tweet_text=tweet_text,
         update_user_profile=True,
     )
+
 
 if __name__ == '__main__':
     _tweet()

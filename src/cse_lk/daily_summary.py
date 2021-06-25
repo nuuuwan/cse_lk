@@ -13,10 +13,6 @@ from cse_lk import _utils
 from cse_lk._utils import log
 
 
-def _get_daily_summary_file_name(date_id):
-    return '/tmp/cse_lk.daily_summary.%s.tsv' % date_id
-
-
 @cache(_constants.CACHE_NAME, _constants.CACHE_TIMEOUT)
 def _scrape_html():
     """Run."""
@@ -78,7 +74,7 @@ def _parse_html(html):
             'delta_price': dt.parse_float(delta_price),
             'delta_price_p': dt.parse_float(delta_price_p),
         })
-    daily_summary_file_name = _get_daily_summary_file_name(date_id)
+    daily_summary_file_name = '/tmp/cse_lk.daily_summary.%s.tsv' % date_id
     tsv.write(daily_summary_file_name, daily_summary)
     log.info(
         'Parsed %d companies and saved to %s',
