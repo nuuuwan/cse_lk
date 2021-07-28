@@ -1,0 +1,12 @@
+{
+  "aspi": {
+    "value": 8096.98,
+    "change": 4.0,
+    "p_change": 0.0005
+  },
+  "snp": {
+    "value": 3050.99,
+    "change": 2.77,
+    "p_change": 0.0009
+  }
+}
