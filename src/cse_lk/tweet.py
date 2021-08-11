@@ -6,7 +6,7 @@ from cse_lk import daily_summary, daily_blurb
 
 
 def _tweet():
-    ut = timex.get_unixtime()
+    ut = timex.get_unixtime() - 86400
     date = timex.format_time(ut, '%Y-%m-%d')
     daily_blurb_info = daily_blurb.get_daily_blurb_info()
     index_summary = daily_blurb_info['index_summary']

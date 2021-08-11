@@ -111,7 +111,8 @@ def get_current_daily_summary(ut):
 
     def _extend(row):
         price_previous_close = dt.parse_float(row['price_previous_close'])
-        delta_price = dt.parse_float(row['delta_price'])
+        price_last_traded = dt.parse_float(row['price_last_traded'])
+        delta_price = price_last_traded - price_previous_close
         if not price_previous_close:
             row['p_delta_price'] = 0
         else:
