@@ -26,3 +26,5 @@ pip install -i https://test.pypi.org/simple/ cse_lk-nuuuwan
 ### WISHLIST
 * Daily market summary: https://www.cse.lk/pages/daily-market-summary/daily-market-summary.component.html
 * Complete historical data: https://finance.yahoo.com/quote/%5ECSE/history/
+* [2021-08-11 06:30AM] Fix Losers Bug
+  * Updated README
