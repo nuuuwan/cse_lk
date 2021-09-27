@@ -33,3 +33,4 @@ pip install -i https://test.pypi.org/simple/ cse_lk-nuuuwan
 * [2021-08-11 06:38AM] Fix losers bug 2
   * Updated README
   * Pre-Merge
+  *  [2021-09-27 05:32PM] Updated tweepy==3.10.0

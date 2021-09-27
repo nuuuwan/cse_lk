@@ -38,7 +38,8 @@ setuptools.setup(
     install_requires=[
         'selenium',
         'utils-nuuuwan',
-        'bs4'
+        'bs4',
+        'tweepy==3.10.0',
         'pillow',
     ],
     test_suite='nose.collector',
