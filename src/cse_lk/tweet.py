@@ -1,8 +1,8 @@
 """Tweet."""
 
-from utils import twitter, timex
+from utils import timex, twitter
 
-from cse_lk import daily_summary, daily_blurb
+from cse_lk import daily_blurb, daily_summary
 
 
 def _tweet():

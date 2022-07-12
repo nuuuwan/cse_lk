@@ -1,15 +1,13 @@
 """Scrape."""
 import os
 
+from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
-from bs4 import BeautifulSoup
-
-from utils.cache import cache
 from utils import dt, timex, tsv, www
+from utils.cache import cache
 
-from cse_lk import _constants
-from cse_lk import _utils
+from cse_lk import _constants, _utils
 from cse_lk._utils import log
 
 
@@ -56,24 +54,28 @@ def _parse_html(html):
             price_last_traded,
             delta_price,
             delta_price_p,
-        ] = list(map(
-            lambda td_cell: td_cell.text.strip(),
-            tr_company_row,
-        ))
+        ] = list(
+            map(
+                lambda td_cell: td_cell.text.strip(),
+                tr_company_row,
+            )
+        )
 
-        daily_summary.append({
-            'name': name,
-            'symbol': symbol,
-            'share_volume': _utils.parse_int(share_volume),
-            'trade_volume': _utils.parse_int(trade_volume),
-            'price_previous_close': dt.parse_float(price_previous_close),
-            'price_open': dt.parse_float(price_open),
-            'price_high': dt.parse_float(price_high),
-            'price_low': dt.parse_float(price_low),
-            'price_last_traded': dt.parse_float(price_last_traded),
-            'delta_price': dt.parse_float(delta_price),
-            'delta_price_p': dt.parse_float(delta_price_p),
-        })
+        daily_summary.append(
+            {
+                'name': name,
+                'symbol': symbol,
+                'share_volume': _utils.parse_int(share_volume),
+                'trade_volume': _utils.parse_int(trade_volume),
+                'price_previous_close': dt.parse_float(price_previous_close),
+                'price_open': dt.parse_float(price_open),
+                'price_high': dt.parse_float(price_high),
+                'price_low': dt.parse_float(price_low),
+                'price_last_traded': dt.parse_float(price_last_traded),
+                'delta_price': dt.parse_float(delta_price),
+                'delta_price_p': dt.parse_float(delta_price_p),
+            }
+        )
     daily_summary_file_name = '/tmp/cse_lk.daily_summary.%s.tsv' % date_id
     tsv.write(daily_summary_file_name, daily_summary)
     log.info(
@@ -126,7 +128,6 @@ def get_current_daily_summary(ut):
     )
 
     return sorted_extended
-
 
 
 if __name__ == '__main__':

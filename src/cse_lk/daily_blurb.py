@@ -1,13 +1,12 @@
 """Scrape."""
 import time
 
-from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
 from bs4 import BeautifulSoup
 from PIL import Image
-
+from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
+from utils import jsonx, timex
 from utils.cache import cache
-from utils import timex, jsonx
 
 from cse_lk import _constants
 from cse_lk._utils import log
@@ -30,10 +29,10 @@ def _scrape():
     log.info('Saved ss to %s', ss_image_1day_file)
 
     browser.find_element_by_xpath(
-      "//select[@id='aspiDateRange']/option[text()='One year']"
+        "//select[@id='aspiDateRange']/option[text()='One year']"
     ).click()
     browser.find_element_by_xpath(
-      "//select[@id='snpDateRange']/option[text()='One year']"
+        "//select[@id='snpDateRange']/option[text()='One year']"
     ).click()
 
     time.sleep(4)
@@ -111,7 +110,7 @@ def _parse(html, ss_image_1day_file, ss_image_1year_file):
             snp_1day_image_file,
             aspi_1year_image_file,
             snp_1year_image_file,
-        ]
+        ],
     }
 
 
