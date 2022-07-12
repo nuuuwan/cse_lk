@@ -28,10 +28,10 @@ def _scrape():
     browser.save_screenshot(ss_image_1day_file)
     log.info('Saved ss to %s', ss_image_1day_file)
 
-    browser.find_element_by_xpath(
+    browser.find_element("xpath",
         "//select[@id='aspiDateRange']/option[text()='One year']"
     ).click()
-    browser.find_element_by_xpath(
+    browser.find_element("xpath",
         "//select[@id='snpDateRange']/option[text()='One year']"
     ).click()
 
