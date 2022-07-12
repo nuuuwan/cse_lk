@@ -19,8 +19,9 @@ def _scrape_html():
     browser = webdriver.Firefox(options=options)
     browser.get(_constants.URL_DAILY_SUMMARY)
 
-    browser.find_element("xpath",
-        "//select[@name='DataTables_Table_0_length']/option[text()='All']"
+    browser.find_element(
+        "xpath",
+        "//select[@name='DataTables_Table_0_length']/option[text()='All']",
     ).click()
 
     html = browser.page_source
