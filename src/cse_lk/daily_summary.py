@@ -4,7 +4,7 @@ import os
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
-from utils import dt, timex, tsv, www
+from utils import WWW, dt, timex, tsv
 from utils.cache import cache
 
 from cse_lk import _constants, _utils
@@ -106,11 +106,11 @@ def get_current_daily_summary(ut):
         'nuuuwan/cse_lk/data',
         'cse_lk.daily_summary.{date_id}.tsv'.format(date_id=date_id),
     )
-    if not www.exists(url):
+    if not WWW(url).exists:
         log.warn('No data for {date_id}'.format(date_id=date_id))
         return None
 
-    current_daily_summary = www.read_tsv(url)
+    current_daily_summary = WWW(url).readTSV()
 
     def _extend(row):
         price_previous_close = dt.parse_float(row['price_previous_close'])
