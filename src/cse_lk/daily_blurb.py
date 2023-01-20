@@ -5,13 +5,12 @@ from bs4 import BeautifulSoup
 from PIL import Image
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
-from utils import JSONFile, Time, cache, get_date_id
+from utils import JSONFile, Time, get_date_id
 
 from cse_lk import _constants
 from cse_lk._utils import log
 
 
-@cache(_constants.CACHE_NAME, _constants.CACHE_TIMEOUT)
 def _scrape():
     """Run."""
     options = Options()
