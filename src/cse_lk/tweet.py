@@ -1,13 +1,13 @@
 """Tweet."""
 
-from utils import timex, twitter
+from utils import Time, TimeFormat, twitter
 
 from cse_lk import daily_blurb, daily_summary
 
 
 def _tweet():
-    ut = timex.get_unixtime()
-    date = timex.format_time(ut, '%Y-%m-%d')
+    ut = Time().ut
+    date = TimeFormat('%Y-%m-%d').stringify(Time(ut))
     daily_blurb_info = daily_blurb.get_daily_blurb_info()
     index_summary = daily_blurb_info['index_summary']
     status_image_files = daily_blurb_info['image_files']

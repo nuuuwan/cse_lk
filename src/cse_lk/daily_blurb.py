@@ -5,8 +5,7 @@ from bs4 import BeautifulSoup
 from PIL import Image
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
-from utils import jsonx, timex
-from utils.cache import cache
+from utils import JSONFile, Time, cache, get_date_id
 
 from cse_lk import _constants
 from cse_lk._utils import log
@@ -121,14 +120,14 @@ def get_daily_blurb_info():
 
 
 def dump_daily_blurb():
-    ut = timex.get_unixtime()
-    date_id = timex.format_time(ut, '%Y%m%d')
+    Time().ut
+    date_id = get_date_id()
 
     html, ss_image_1day_file, ss_image_1year_file = _scrape()
     _daily_blurb = _parse(html, ss_image_1day_file, ss_image_1year_file)
     index_summary = _daily_blurb['index_summary']
     daily_blurb_file_name = '/tmp/cse_lk.daily_blurb.%s.json' % date_id
-    jsonx.write(daily_blurb_file_name, index_summary)
+    JSONFile(daily_blurb_file_name).write(index_summary)
     log.info(
         'Wrote daily blurb to %s',
         daily_blurb_file_name,

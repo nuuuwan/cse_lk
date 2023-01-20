@@ -4,14 +4,13 @@ import os
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
-from utils import WWW, dt, timex, tsv
-from utils.cache import cache
+from utils import (TIME_FORMAT_DATE_ID, WWW, String, Time, TimeFormat, TSVFile,
+                   get_date_id)
 
-from cse_lk import _constants, _utils
+from cse_lk import _constants
 from cse_lk._utils import log
 
 
-@cache(_constants.CACHE_NAME, _constants.CACHE_TIMEOUT)
 def _scrape_html():
     """Run."""
     options = Options()
@@ -33,11 +32,13 @@ def _parse_html(html):
     soup = BeautifulSoup(html, 'html.parser')
 
     span_updated_time = soup.find('span', class_='updated-time')
-    unixtime = timex.parse_time(
-        span_updated_time.text.strip(),
-        'MARKET STATISTICS AS OF %b %d, %Y, %I:%M:%S %p',
+    unixtime = (
+        TimeFormat('MARKET STATISTICS AS OF %b %d, %Y, %I:%M:%S %p')
+        .parse(span_updated_time.text.strip())
+        .ut
     )
-    date_id = timex.format_time(unixtime, '%Y%m%d')
+
+    date_id = TIME_FORMAT_DATE_ID.stringify(Time(unixtime))
 
     daily_summary = []
     for i_row, tr_company_row in enumerate(soup.find_all('tr')):
@@ -66,19 +67,19 @@ def _parse_html(html):
             {
                 'name': name,
                 'symbol': symbol,
-                'share_volume': _utils.parse_int(share_volume),
-                'trade_volume': _utils.parse_int(trade_volume),
-                'price_previous_close': dt.parse_float(price_previous_close),
-                'price_open': dt.parse_float(price_open),
-                'price_high': dt.parse_float(price_high),
-                'price_low': dt.parse_float(price_low),
-                'price_last_traded': dt.parse_float(price_last_traded),
-                'delta_price': dt.parse_float(delta_price),
-                'delta_price_p': dt.parse_float(delta_price_p),
+                'share_volume': String(share_volume).int,
+                'trade_volume': String(trade_volume).int,
+                'price_previous_close': String(price_previous_close).float,
+                'price_open': String(price_open).float,
+                'price_high': String(price_high).float,
+                'price_low': String(price_low).float,
+                'price_last_traded': String(price_last_traded).float,
+                'delta_price': String(delta_price).float,
+                'delta_price_p': String(delta_price_p).float,
             }
         )
     daily_summary_file_name = '/tmp/cse_lk.daily_summary.%s.tsv' % date_id
-    tsv.write(daily_summary_file_name, daily_summary)
+    TSVFile(daily_summary_file_name).write(daily_summary)
     log.info(
         'Parsed %d companies and saved to %s',
         len(daily_summary),
@@ -100,7 +101,7 @@ def dump_daily_summary():
 
 def get_current_daily_summary(ut):
     """Get daily summary."""
-    date_id = timex.format_time(ut, '%Y%m%d')
+    date_id = get_date_id()
     url = os.path.join(
         'https://raw.githubusercontent.com',
         'nuuuwan/cse_lk/data',
@@ -113,8 +114,8 @@ def get_current_daily_summary(ut):
     current_daily_summary = WWW(url).readTSV()
 
     def _extend(row):
-        price_previous_close = dt.parse_float(row['price_previous_close'])
-        price_last_traded = dt.parse_float(row['price_last_traded'])
+        price_previous_close = String(row['price_previous_close']).float
+        price_last_traded = String(row['price_last_traded']).float
         delta_price = price_last_traded - price_previous_close
         if not price_previous_close:
             row['p_delta_price'] = 0
