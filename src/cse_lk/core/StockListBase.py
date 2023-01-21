@@ -1,10 +1,5 @@
 from dataclasses import dataclass
 
-from utils import Directory, Git, TimeFormat, TSVFile
-
-from cse_lk.core.DailySummary import DailySummary
-from cse_lk.core.Stock import Stock
-
 
 @dataclass
 class StockListBase:
@@ -12,4 +7,9 @@ class StockListBase:
 
     def __getitem__(self, index):
         return self.stock_list[index]
-        
+
+    def __len__(self):
+        return len(self.stock_list)
+
+    def __iter__(self):
+        return iter(self.stock_list)

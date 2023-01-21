@@ -1,5 +1,3 @@
-
-from cse_lk.core.Stock import Stock
 from cse_lk.core.StockList import StockList
 from cse_lk.reports.Tweet import Tweet
 

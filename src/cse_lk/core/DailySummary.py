@@ -16,7 +16,7 @@ class DailySummary:
     price_last_traded: float
 
     @property
-    def date_str(self):
+    def date(self):
         return TimeFormat('%Y-%m-%d').stringify(Time(self.ut))
 
     @property
