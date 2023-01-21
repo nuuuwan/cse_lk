@@ -42,7 +42,14 @@ class Instrument(InstrumentBase, InstrumentStatistics):
         instrument_list = []
         for symbol, daily_summary_list in symbol_to_daily_summary.items():
             daily_summary_list = sorted(
-                daily_summary_list, key=lambda x: x.ut
+                list(
+                    filter(
+                        lambda x: x.price_previous_close
+                        and x.price_last_traded,
+                        daily_summary_list,
+                    )
+                ),
+                key=lambda x: x.ut,
             )
             instrument = Instrument(
                 symbol_to_name[symbol], symbol, daily_summary_list
@@ -54,4 +61,20 @@ class Instrument(InstrumentBase, InstrumentStatistics):
 
 if __name__ == '__main__':
     instrument_list = Instrument.load_from_remote()
-    print(instrument_list[0].mean, instrument_list[0].stdev)
+    for instrument in sorted(
+        instrument_list, key=lambda x: x.latest_daily_summary.p_delta_price
+    ):
+
+        latest_p_p_delta_price = instrument.latest_p_p_delta_price
+        latest_p_delta_price = instrument.latest_p_delta_price
+        print(
+            '\t'.join(
+                [
+                    f'{latest_p_delta_price:.1%}',
+                    f'{ latest_p_p_delta_price:.1%}',
+                    f'{instrument.latest_p_p_delta_price_human}',
+                    instrument.symbol,
+                    instrument.name,
+                ]
+            )
+        )
