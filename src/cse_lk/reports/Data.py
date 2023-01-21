@@ -7,6 +7,9 @@ log = Log('Data')
 
 
 class Data:
+    def clean(self, x):
+        return x
+
     @cached_property
     def data(self):
         raise NotImplementedError
@@ -26,4 +29,4 @@ class Data:
     def load(self):
         if not self.data_file.exists:
             self.store()
-        return self.data_file.read()
+        return [self.clean(x) for x in self.data_file.read()]
