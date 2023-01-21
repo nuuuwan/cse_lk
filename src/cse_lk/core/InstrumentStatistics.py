@@ -33,11 +33,19 @@ class InstrumentStatistics:
     def latest_p_p_delta_price_human(self):
         latest_p_p_delta_price = self.latest_p_p_delta_price
         if latest_p_p_delta_price > 0.5:
-            alpha = (1 - latest_p_p_delta_price) * 2
-            sign = '+'
+            alpha = 1 - latest_p_p_delta_price
+            sign = '🟢'
         else:
-            alpha = latest_p_p_delta_price * 2
-            sign = '-'
+            alpha = latest_p_p_delta_price
+            sign = '🔴'
 
         log_alpha = -math.log10(alpha)
         return (int)(log_alpha) * sign
+
+    @property
+    def is_latest_significant(self):
+        limit = 0.01
+        return (
+            self.latest_p_p_delta_price < limit
+            or self.latest_p_p_delta_price > (1 - limit)
+        )

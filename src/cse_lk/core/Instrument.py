@@ -57,24 +57,3 @@ class Instrument(InstrumentBase, InstrumentStatistics):
             instrument_list.append(instrument)
 
         return instrument_list
-
-
-if __name__ == '__main__':
-    instrument_list = Instrument.load_from_remote()
-    for instrument in sorted(
-        instrument_list, key=lambda x: x.latest_daily_summary.p_delta_price
-    ):
-
-        latest_p_p_delta_price = instrument.latest_p_p_delta_price
-        latest_p_delta_price = instrument.latest_p_delta_price
-        print(
-            '\t'.join(
-                [
-                    f'{latest_p_delta_price:.1%}',
-                    f'{ latest_p_p_delta_price:.1%}',
-                    f'{instrument.latest_p_p_delta_price_human}',
-                    instrument.symbol,
-                    instrument.name,
-                ]
-            )
-        )
