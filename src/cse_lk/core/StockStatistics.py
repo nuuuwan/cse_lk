@@ -2,7 +2,7 @@ import math
 import statistics
 
 
-class InstrumentStatistics:
+class StockStatistics:
     @property
     def price_list(self):
         return [d.price_last_traded for d in self.daily_summary_list]

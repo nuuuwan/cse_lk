@@ -1,10 +1,8 @@
 from dataclasses import dataclass
 
-from cse_lk.core.DailySummary import DailySummary
-
 
 @dataclass
-class InstrumentBase:
+class StockBase:
     name: str
     symbol: str
     daily_summary_list: list

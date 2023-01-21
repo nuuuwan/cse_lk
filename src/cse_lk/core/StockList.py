@@ -1,11 +1,15 @@
+from dataclasses import dataclass
+
 from utils import Directory, Git, TimeFormat, TSVFile
 
 from cse_lk.core.DailySummary import DailySummary
-from cse_lk.core.InstrumentBase import InstrumentBase
-from cse_lk.core.InstrumentStatistics import InstrumentStatistics
+from cse_lk.core.Stock import Stock
 
 
-class Instrument(InstrumentBase, InstrumentStatistics):
+@dataclass
+class StockList:
+    stock_list: list
+
     @staticmethod
     def is_summary_file(child):
         return child.name.startswith('cse_lk.daily_summary.')
@@ -20,7 +24,7 @@ class Instrument(InstrumentBase, InstrumentStatistics):
         symbol_to_name = {}
 
         for child in Directory('/tmp/cse_lk').children:
-            if not Instrument.is_summary_file(child):
+            if not Stock.is_summary_file(child):
                 continue
             date_str = child.name[21: 21 + 8]
             ut = TimeFormat('%Y%m%d').parse(date_str).ut
@@ -39,7 +43,7 @@ class Instrument(InstrumentBase, InstrumentStatistics):
 
                 symbol_to_name[symbol] = name
 
-        instrument_list = []
+        stock_list = []
         for symbol, daily_summary_list in symbol_to_daily_summary.items():
             daily_summary_list = sorted(
                 list(
@@ -51,9 +55,7 @@ class Instrument(InstrumentBase, InstrumentStatistics):
                 ),
                 key=lambda x: x.ut,
             )
-            instrument = Instrument(
-                symbol_to_name[symbol], symbol, daily_summary_list
-            )
-            instrument_list.append(instrument)
+            stock = Stock(symbol_to_name[symbol], symbol, daily_summary_list)
+            stock_list.append(stock)
 
-        return instrument_list
+        return StockList(stock_list)

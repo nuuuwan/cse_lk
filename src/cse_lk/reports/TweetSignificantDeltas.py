@@ -1,6 +1,6 @@
 from utils import twitter
 
-from cse_lk.core.Instrument import Instrument
+from cse_lk.core.Stock import Stock
 
 MAX_INSTRUMENTS = 8
 
@@ -21,24 +21,20 @@ class TweetSignificantDeltas:
 
     @property
     def body_lines(self):
-        instrument_list = Instrument.load_from_remote()
-        date_str = instrument_list[0].latest_daily_summary.date_str
+        stock_list = Stock.load_from_remote()
+        date_str = stock_list[0].latest_daily_summary.date_str
 
-        significant_instrument_list = sorted(
-            [
-                instrument
-                for instrument in instrument_list
-                if instrument.is_latest_significant
-            ],
+        significant_stock_list = sorted(
+            [stock for stock in stock_list if stock.is_latest_significant],
             key=lambda x: -x.latest_p_p_delta_price,
         )[:MAX_INSTRUMENTS]
         inner_lines = ['']
-        for instrument in significant_instrument_list:
+        for stock in significant_stock_list:
             line = ' '.join(
                 [
-                    f'{instrument.latest_p_delta_price:+.1%}',
-                    instrument.symbol,
-                    f'{instrument.latest_p_p_delta_price_human}',
+                    f'{stock.latest_p_delta_price:+.1%}',
+                    stock.symbol,
+                    f'{stock.latest_p_p_delta_price_human}',
                 ]
             )
             inner_lines.append(line)
