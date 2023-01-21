@@ -7,7 +7,7 @@ from cse_lk.core.DailySummary import DailySummary
 class InstrumentBase:
     name: str
     symbol: str
-    daily_summary_list: list[DailySummary]
+    daily_summary_list: list
 
     @property
     def latest_daily_summary(self):
