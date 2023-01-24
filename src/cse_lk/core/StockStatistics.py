@@ -39,6 +39,12 @@ class StockStatistics:
     @cached_property
     def latest_p_p_delta_price_human(self):
         latest_p_p_delta_price = self.latest_p_p_delta_price
+        p100 = latest_p_p_delta_price * 100
+        return f'{p100:.1f}η'
+
+    @cached_property
+    def latest_p_p_delta_price_icon(self):
+        latest_p_p_delta_price = self.latest_p_p_delta_price
         if latest_p_p_delta_price > 0.5:
             alpha = 1 - latest_p_p_delta_price
             sign = '🟢'

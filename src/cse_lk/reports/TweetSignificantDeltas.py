@@ -2,6 +2,7 @@ from cse_lk.core.StockList import StockList
 from cse_lk.reports.Tweet import Tweet
 
 MAX_INSTRUMENTS = 8
+MAX_CHARS_INNER_LINES = 180
 
 
 class TweetSignificantDeltas(Tweet):
@@ -11,17 +12,23 @@ class TweetSignificantDeltas(Tweet):
         date = stock_list[0].latest_daily_summary.date
 
         significant_stock_list = sorted(
-            [stock for stock in stock_list if stock.is_latest_significant],
-            key=lambda x: -x.latest_p_p_delta_price,
-        )[:MAX_INSTRUMENTS]
+            [stock for stock in stock_list],
+            key=lambda x: -abs(x.latest_p_p_delta_price-0.5),
+        )
 
         inner_lines = ['']
         for stock in significant_stock_list:
+
+            if len('\n'.join(inner_lines)) > MAX_CHARS_INNER_LINES:
+                break
+
             line = ' '.join(
                 [
-                    f'{stock.latest_p_delta_price:+.1%}',
-                    stock.symbol,
+                    f'{stock.latest_p_p_delta_price_icon}', 
                     f'{stock.latest_p_p_delta_price_human}',
+
+                    f'{stock.latest_p_delta_price:+.1%}',
+                    stock.symbol_short,                    
                 ]
             )
             inner_lines.append(line)
