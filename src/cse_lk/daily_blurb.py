@@ -24,7 +24,7 @@ def _scrape():
     time.sleep(4)
     ss_image_1day_file = '/tmp/tmp.cse_lk.blurb.1day.ss.png'
     browser.save_screenshot(ss_image_1day_file)
-    log.info('Saved ss to %s', ss_image_1day_file)
+    log.info(f'Saved ss to {ss_image_1day_file}')
 
     browser.find_element(
         "xpath", "//select[@id='aspiDateRange']/option[text()='One year']"
@@ -36,7 +36,7 @@ def _scrape():
     time.sleep(4)
     ss_image_1year_file = '/tmp/tmp.cse_lk.blurb.1year.ss.png'
     browser.save_screenshot(ss_image_1year_file)
-    log.info('Saved ss to %s', ss_image_1year_file)
+    log.info(f'Saved ss to {ss_image_1year_file}')
 
     html = browser.page_source
     browser.quit()
@@ -76,14 +76,14 @@ def _parse(html, ss_image_1day_file, ss_image_1year_file):
     cropped_im1 = cropped_im1.resize((800, 450))
     aspi_1day_image_file = '/tmp/tmp.cse_lk.aspi.1day.png'
     cropped_im1.save(aspi_1day_image_file)
-    log.info('Saved cropped ss to %s', aspi_1day_image_file)
+    log.info(f'Saved cropped ss to {aspi_1day_image_file}')
 
     left, top = 760, 845
     cropped_im2 = im.crop((left, top, left + width, top + height))
     cropped_im2 = cropped_im2.resize((800, 450))
     snp_1day_image_file = '/tmp/tmp.cse_lk.snp.1day.png'
     cropped_im2.save(snp_1day_image_file)
-    log.info('Saved cropped ss to %s', snp_1day_image_file)
+    log.info(f'Saved cropped ss to {snp_1day_image_file}')
 
     im = Image.open(ss_image_1year_file)
     left, top = 175, 845
@@ -92,14 +92,14 @@ def _parse(html, ss_image_1day_file, ss_image_1year_file):
     cropped_im1 = cropped_im1.resize((800, 450))
     aspi_1year_image_file = '/tmp/tmp.cse_lk.aspi.1year.png'
     cropped_im1.save(aspi_1year_image_file)
-    log.info('Saved cropped ss to %s', aspi_1year_image_file)
+    log.info(f'Saved cropped ss to {aspi_1year_image_file}')
 
     left, top = 760, 845
     cropped_im2 = im.crop((left, top, left + width, top + height))
     cropped_im2 = cropped_im2.resize((800, 450))
     snp_1year_image_file = '/tmp/tmp.cse_lk.snp.1year.png'
     cropped_im2.save(snp_1year_image_file)
-    log.info('Saved cropped ss to %s', snp_1year_image_file)
+    log.info(f'Saved cropped ss to {snp_1year_image_file}')
 
     return {
         'index_summary': index_summary,
@@ -128,6 +128,5 @@ def dump_daily_blurb():
     daily_blurb_file_name = '/tmp/cse_lk.daily_blurb.%s.json' % date_id
     JSONFile(daily_blurb_file_name).write(index_summary)
     log.info(
-        'Wrote daily blurb to %s',
-        daily_blurb_file_name,
+        f'Wrote daily blurb to {daily_blurb_file_name}',
     )

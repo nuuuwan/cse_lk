@@ -78,12 +78,11 @@ def _parse_html(html):
                 'delta_price_p': String(delta_price_p).float,
             }
         )
-    daily_summary_file_name = '/tmp/cse_lk.daily_summary.%s.tsv' % date_id
+    daily_summary_file_name = f'/tmp/cse_lk.daily_summary.{date_id}.tsv'
     TSVFile(daily_summary_file_name).write(daily_summary)
     log.info(
-        'Parsed %d companies and saved to %s',
-        len(daily_summary),
-        daily_summary_file_name,
+        f'Parsed { len(daily_summary) } companies'
+        + f' and saved to {daily_summary_file_name}',
     )
     return daily_summary
 
@@ -92,9 +91,7 @@ def dump_daily_summary():
     """Dump daily summary."""
     html = _scrape_html()
     log.info(
-        'Scraped %dKB from %s',
-        len(html) / 1000,
-        _constants.URL_DAILY_SUMMARY,
+        f'Scraped { len(html) / 1000 } KB from {_constants.URL_DAILY_SUMMARY}',
     )
     return _parse_html(html)
 
@@ -108,7 +105,7 @@ def get_current_daily_summary(ut):
         'cse_lk.daily_summary.{date_id}.tsv'.format(date_id=date_id),
     )
     if not WWW(url).exists:
-        log.warn('No data for {date_id}'.format(date_id=date_id))
+        log.warn(f'No data for {date_id}')
         return None
 
     current_daily_summary = WWW(url).readTSV()
