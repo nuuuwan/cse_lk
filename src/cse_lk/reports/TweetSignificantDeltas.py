@@ -2,7 +2,7 @@ from cse_lk.core.StockList import StockList
 from cse_lk.reports.Tweet import Tweet
 
 MAX_INSTRUMENTS = 8
-MAX_CHARS_INNER_LINES = 180
+MAX_CHARS_INNER_LINES = 150
 
 
 class TweetSignificantDeltas(Tweet):
