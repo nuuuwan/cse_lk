@@ -8,7 +8,7 @@ class TweetSignificantDeltas(Tweet):
     @property
     def body_lines(self):
         stock_list = StockList.load_from_remote()
-        date_str = stock_list[0].latest_daily_summary.date_str
+        date = stock_list[0].latest_daily_summary.date
 
         significant_stock_list = sorted(
             [stock for stock in stock_list if stock.is_latest_significant],
@@ -26,7 +26,7 @@ class TweetSignificantDeltas(Tweet):
             )
             inner_lines.append(line)
 
-        inner_lines += ['', f'({date_str} EOT)']
+        inner_lines += ['', f'({date} EOT)']
         return inner_lines
 
 

@@ -23,8 +23,8 @@ class StockList(StockListBase, StockListStatistics):
         for child in Directory('/tmp/cse_lk').children:
             if not StockList.is_summary_file(child):
                 continue
-            date_str = child.name[21: 21 + 8]
-            ut = TimeFormat('%Y%m%d').parse(date_str).ut
+            date = child.name[21: 21 + 8]
+            ut = TimeFormat('%Y%m%d').parse(date).ut
             data_list = TSVFile(child.path).read()
 
             for d in data_list:
