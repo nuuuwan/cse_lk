@@ -1,8 +1,9 @@
 name: Upload Data with Cron
 
-on:
-  schedule:
-    - cron:  "0 11 * * *"
+# on:
+#   schedule:
+#     - cron:  "0 11 * * *"
+on: workflow_dispatch
 
 jobs:
   test-build-and-deploy:
