@@ -2,6 +2,7 @@ from dataclasses import dataclass
 
 from utils import String, Time, TimeFormat
 
+
 @dataclass
 class DailySummary:
     ut: int
@@ -22,7 +23,6 @@ class DailySummary:
     @property
     def delta_price(self):
         return self.price_last_traded - self.price_previous_close
-
 
     @staticmethod
     def from_dict(ut: int, d: dict):
