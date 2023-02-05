@@ -1,4 +1,6 @@
-from utils import Tweet, Twitter
+from utils import Log, Tweet, Twitter
+
+log = Log('BaseTweetReport')
 
 
 class BaseTweetReport:
@@ -15,6 +17,7 @@ data: www.cse.lk
 
     @property
     def tweet(self):
+        log.debug(self.tweet_text)
         return Tweet(
             text=self.tweet_text,
         )
