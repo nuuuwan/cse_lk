@@ -1,4 +1,4 @@
-name: Upload Data
+name: Run Pipeline MANUAL
 
 on: workflow_dispatch
 
@@ -31,10 +31,10 @@ jobs:
         export PYTHONPATH="$PYTHONPATH:./src"
         pytest
 
-    - name: Run
+    - name: Run pipeline
       run: |
         export PYTHONPATH="$PYTHONPATH:./src"
-        python workflows/upload_daily_summary.py
+        python workflows/pipeline.py
 
     - name: Checkout repo branch data
       uses: actions/checkout@v2

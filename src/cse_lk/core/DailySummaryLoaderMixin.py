@@ -39,14 +39,23 @@ class DailySummaryLoaderMixin(CommonMixin):
             if child.name.startswith(
                 'cse_lk.daily_summary.'
             ) and child.name.endswith('.tsv'):
-                log.debug(f'Reading file {child.name}')
                 d_list_raw = TSVFile(child.path).read()
                 # FIX: legacy time format missing ut
                 ut = TimeFormat('%Y%m%d').parse(child.name[21:29]).ut
                 d_list_raw = [d | {'ut': str(ut)} for d in d_list_raw]
                 d_list += d_list_raw
 
+        d_list = sorted(d_list, key=lambda d: d['ut'] + d['symbol'])
         return [cls.from_dict(d) for d in d_list]
+
+    @classmethod
+    def idx_all(self):
+        idx = {}
+        for ds in self.list_all():
+            if ds.symbol not in idx:
+                idx[ds.symbol] = []
+            idx[ds.symbol].append(ds)
+        return idx
 
     @classmethod
     def list_from_symbol(cls, symbol):
