@@ -34,7 +34,7 @@ jobs:
     - name: Run
       run: |
         export PYTHONPATH="$PYTHONPATH:./src"
-        python src/cse_lk/upload_data.py
+        python workflows/upload_daily_summary.py
 
     - name: Checkout repo branch data
       uses: actions/checkout@v2

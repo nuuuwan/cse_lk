@@ -1,9 +1,9 @@
 name: Upload Data with Cron
 
-# on:
-#   schedule:
-#     - cron:  "0 11 * * *"
-on: workflow_dispatch
+on:
+  schedule:
+    - cron:  "0 11 * * *"
+# on: workflow_dispatch
 
 jobs:
   test-build-and-deploy:
@@ -37,7 +37,7 @@ jobs:
     - name: Run
       run: |
         export PYTHONPATH="$PYTHONPATH:./src"
-        python src/cse_lk/upload_data.py
+        python workflows/upload_daily_summary.py
 
     - name: Checkout repo branch data
       uses: actions/checkout@v2

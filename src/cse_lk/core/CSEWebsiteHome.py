@@ -1,14 +1,9 @@
 import os
-from utils import (
-    Browser,
-    Log,
-    String,
-    TimeFormat,
-    TSVFile,
-    TIME_FORMAT_DATE_ID,
-    Time,
-)
+
 from bs4 import BeautifulSoup
+from utils import (TIME_FORMAT_DATE_ID, Browser, Log, String, Time, TimeFormat,
+                   TSVFile)
+
 from cse_lk.core.DailySummary import DailySummary
 
 log = Log('CSEWebsiteDailySummary')
@@ -34,10 +29,42 @@ class CSEWebsiteDailySummary:
         browser.quit()
         return html
 
+    def _parse_row(self, tr_company_row, ut):
+        [
+            name,
+            symbol,
+            share_volume,
+            trade_volume,
+            price_previous_close,
+            price_open,
+            price_high,
+            price_low,
+            price_last_traded,
+            _,  # delta_price,
+            _,  # delta_price_p,
+        ] = list(
+            map(
+                lambda td_cell: td_cell.text.strip(),
+                tr_company_row,
+            )
+        )
+
+        return DailySummary(
+            ut=ut,
+            symbol=symbol,
+            name=name,
+            share_volume=String(share_volume).int,
+            trade_volume=String(trade_volume).int,
+            price_previous_close=String(price_previous_close).float,
+            price_open=String(price_open).float,
+            price_high=String(price_high).float,
+            price_low=String(price_low).float,
+            price_last_traded=String(price_last_traded).float,
+        )
+
     @property
     def daily_summary_list(self):
         soup = BeautifulSoup(self.html, 'html.parser')
-
         span_updated_time = soup.find('span', class_='updated-time')
         ut = (
             TimeFormat('MARKET STATISTICS AS OF %b %d, %Y, %I:%M:%S %p')
@@ -49,40 +76,8 @@ class CSEWebsiteDailySummary:
         for i_row, tr_company_row in enumerate(soup.find_all('tr')):
             if i_row == 0:
                 continue
-            
-            [
-                name,
-                symbol,
-                share_volume,
-                trade_volume,
-                price_previous_close,
-                price_open,
-                price_high,
-                price_low,
-                price_last_traded,
-                _,  # delta_price,
-                _,  # delta_price_p,
-            ] = list(
-                map(
-                    lambda td_cell: td_cell.text.strip(),
-                    tr_company_row,
-                )
-            )
-
-            daily_summary_list.append(
-                DailySummary(
-                    ut=ut,
-                    symbol=symbol,
-                    name=name,
-                    share_volume=String(share_volume).int,
-                    trade_volume=String(trade_volume).int,
-                    price_previous_close=String(price_previous_close).float,
-                    price_open=String(price_open).float,
-                    price_high=String(price_high).float,
-                    price_low=String(price_low).float,
-                    price_last_traded=String(price_last_traded).float,
-                )
-            )
+            daily_summary = self._parse_row(tr_company_row, ut)
+            daily_summary_list.append(daily_summary)
 
         return daily_summary_list
 
@@ -97,7 +92,3 @@ class CSEWebsiteDailySummary:
         TSVFile(daily_summary_file_path).write(d_list)
         n = len(daily_summary_list)
         log.info(f'Wrote {n} rows to {daily_summary_file_path}')
-
-
-if __name__ == '__main__':
-    print(CSEWebsiteDailySummary().parse_and_save())
