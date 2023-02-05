@@ -12,23 +12,20 @@ class StockList(StockListBase, StockListStatistics):
         return child.name.startswith('cse_lk.daily_summary.')
 
     @staticmethod
-    def load_from_remote():
+    def load_from_remote_helper():
         git = Git('https://github.com/nuuuwan/cse_lk.git')
         git.clone('/tmp/cse_lk')
         git.checkout('data')
 
         symbol_to_daily_summary = {}
         symbol_to_name = {}
-
         for child in Directory('/tmp/cse_lk').children:
             if not StockList.is_summary_file(child):
                 continue
-            date = child.name[21: 21 + 8]
-            ut = TimeFormat('%Y%m%d').parse(date).ut
+            ut = TimeFormat('%Y%m%d').parse(child.name[21: 21 + 8]).ut
             data_list = TSVFile(child.path).read()
 
             for d in data_list:
-                name = d['name']
                 symbol = d['symbol']
                 DailySummary.from_dict(ut, d)
 
@@ -37,9 +34,16 @@ class StockList(StockListBase, StockListStatistics):
                 symbol_to_daily_summary[symbol].append(
                     DailySummary.from_dict(ut, d)
                 )
+                symbol_to_name[symbol] = d['name']
 
-                symbol_to_name[symbol] = name
+        return [symbol_to_daily_summary, symbol_to_name]
 
+    @staticmethod
+    def load_from_remote():
+        [
+            symbol_to_daily_summary,
+            symbol_to_name,
+        ] = StockList.load_from_remote_helper()
         stock_list = []
         for symbol, daily_summary_list in symbol_to_daily_summary.items():
             daily_summary_list = sorted(
