@@ -28,14 +28,16 @@ class TestMonthlyMovers(TestCase):
             ['JETS.N0000', -0.36363636363636365],
         )
 
-    @skip('values become out of date')
+    # @skip('values become out of date')
     def test_tweet_text(self):
         tweet_text = TEST_REPORT.tweet_text
         lines = tweet_text.split('\n')
-        self.assertEqual(len(lines), 17)
-        self.assertEqual(lines[0], 'TOP 28-days GAINERS (as of 2023-02-03)')
+        self.assertEqual(len(lines), 11)
+        self.assertEqual(lines[0], 'TOP 28-day GAINERS (as of 2023-02-03)')
         self.assertEqual(lines[1], '')
-        self.assertEqual(lines[2], '+44% CLC.N0000')
+        self.assertEqual(lines[2], '+44% Commercial Leasing & Finance')
+        self.assertEqual(lines[3], '+37% Seylan Bank')
+        self.assertEqual(lines[-1], '#CSE #SriLanka #LKA @CSE_Media')
 
     @skip('needs twitter API keys')
     def test_send(self):

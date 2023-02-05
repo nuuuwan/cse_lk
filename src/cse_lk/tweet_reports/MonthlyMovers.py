@@ -1,6 +1,6 @@
 from utils import SECONDS_IN, Time, TimeFormat
 
-from cse_lk import DailySummary
+from cse_lk import DailySummary, TwitterNames
 from cse_lk.tweet_reports.BaseTweetReport import BaseTweetReport
 
 
@@ -30,7 +30,7 @@ class MonthlyMovers(BaseTweetReport):
         monthly_movers = []
         for symbol, ds_list in idx_all.items():
             p_monthly = MonthlyMovers.get_p_monthly(ds_list)
-            monthly_movers.append([symbol, p_monthly])
+            monthly_movers.append([ds_list[0].symbol, p_monthly])
         return list(sorted(monthly_movers, key=lambda x: x[1], reverse=True))
 
     @property
@@ -75,13 +75,14 @@ class MonthlyMovers(BaseTweetReport):
     def tweet_text_custom(self):
         monthly_movers = self.monthly_movers_from_mode
         inner = ''
-        MAX_INNER_LEN = 180
+        MAX_INNER_LEN = 200
         for symbol, p_monthly in monthly_movers:
-            line = f'{p_monthly:+.0%} {symbol}'
-            inner += '\n' + line
-            if len(inner) > MAX_INNER_LEN:
+            print(f"'{symbol}': '',")
+            display_name = TwitterNames.get(symbol)
+            line = f'{p_monthly:+.0%} {display_name}'
+            if len(inner + line) > MAX_INNER_LEN:
                 break
+            inner += '\n' + line
 
-        return f'''TOP 28-days {self.label} (as of {self.date})
-{inner}
-        '''
+        return f'''TOP 28-day {self.label} (as of {self.date})
+{inner}'''
