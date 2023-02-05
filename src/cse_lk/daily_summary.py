@@ -4,8 +4,15 @@ import os
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
-from utils import (TIME_FORMAT_DATE_ID, WWW, String, Time, TimeFormat, TSVFile,
-                   get_date_id)
+from utils import (
+    TIME_FORMAT_DATE_ID,
+    WWW,
+    String,
+    Time,
+    TimeFormat,
+    TSVFile,
+    get_date_id,
+)
 
 from cse_lk import _constants
 from cse_lk._utils import log
