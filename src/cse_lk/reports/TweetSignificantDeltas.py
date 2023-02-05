@@ -13,7 +13,7 @@ class TweetSignificantDeltas(Tweet):
 
         significant_stock_list = sorted(
             [stock for stock in stock_list],
-            key=lambda x: -abs(x.latest_p_p_delta_price-0.5),
+            key=lambda x: -abs(x.latest_p_p_delta_price - 0.5),
         )
 
         inner_lines = ['']
@@ -24,11 +24,10 @@ class TweetSignificantDeltas(Tweet):
 
             line = ' '.join(
                 [
-                    f'{stock.latest_p_p_delta_price_icon}', 
+                    f'{stock.latest_p_p_delta_price_icon}',
                     f'{stock.latest_p_p_delta_price_human}',
-
                     f'{stock.latest_p_delta_price:+.1%}',
-                    stock.symbol_short,                    
+                    stock.symbol_short,
                 ]
             )
             inner_lines.append(line)
