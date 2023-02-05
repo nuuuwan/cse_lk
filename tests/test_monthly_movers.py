@@ -35,7 +35,7 @@ class TestMonthlyMovers(TestCase):
         self.assertEqual(len(lines), 13)
         self.assertEqual(lines[0], 'TOP 4-week GAINERS (as of 2023-02-03)')
         self.assertEqual(lines[1], '')
-        self.assertEqual(lines[2], '🟢 +37% @SeylanBank 🇽')
+        self.assertEqual(lines[2], '🟢 +37% @SeylanBank X')
         self.assertEqual(lines[3], '🟢 +36% @SampathBankPLC')
         self.assertEqual(lines[4], '🟢 +35% #ColomboCityHoldings')
 
@@ -46,4 +46,3 @@ class TestMonthlyMovers(TestCase):
     def test_send(self):
         TEST_REPORT.send_test()
         TEST_REPORT_LOSERS.send_test()
-
