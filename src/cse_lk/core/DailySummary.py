@@ -72,3 +72,16 @@ class DailySummary:
             price_low=String(d['price_low']).float,
             price_last_traded=String(d['price_last_traded']).float,
         )
+
+    def to_dict(self):
+        return {
+            'ut': self.ut,
+            'symbol': self.symbol,
+            'share_volume': self.share_volume,
+            'trade_volume': self.trade_volume,
+            'price_previous_close': self.price_previous_close,
+            'price_open': self.price_open,
+            'price_high': self.price_high,
+            'price_low': self.price_low,
+            'price_last_traded': self.price_last_traded,
+        }
