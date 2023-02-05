@@ -3,6 +3,26 @@ from dataclasses import dataclass
 from utils import String, Time, TimeFormat
 
 
+def get_i_equal_list(value, value_list):
+    return [x[0] for x in enumerate(value_list) if x[1] == value]
+
+
+def get_i_more(value, value_list):
+    more_list = [x[0] for x in enumerate(value_list) if x[1] > value]
+    if not more_list:
+        return None
+    return more_list[0]
+
+
+def get_p_mid(index_list, n):
+    n_list = len(index_list)
+    if n_list % 2 == 1:
+        i_mid = index_list[(n_list - 1) // 2]
+    else:
+        i_mid = index_list[n_list // 2] - 0.5
+    return i_mid / n
+
+
 @dataclass
 class DailySummary:
     ut: int
@@ -30,25 +50,10 @@ class DailySummary:
     def get_p_p_delta_price(self, p_delta_price_list):
         n = len(p_delta_price_list)
         p_delta_price = self.p_delta_price
-        i_more = None
-        for i, p in enumerate(p_delta_price_list):
-            if p_delta_price < p:
-                i_more = i
-                break
-
-        i_equal_list = []
-        for i, p in enumerate(p_delta_price_list):
-            if p_delta_price == p:
-                i_equal_list.append(i)
-
+        i_equal_list = get_i_equal_list(p_delta_price, p_delta_price_list)
         if i_equal_list:
-            n_equal_list = len(i_equal_list)
-            if n_equal_list % 2 == 1:
-                i_mid = i_equal_list[(n_equal_list - 1) // 2]
-            else:
-                i_mid = i_equal_list[n_equal_list // 2] - 0.5
-            return i_mid / n
-
+            return get_p_mid(i_equal_list, n)
+        i_more = get_i_more(p_delta_price, p_delta_price_list)
         if i_more:
             return i_more / n
 
