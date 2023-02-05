@@ -27,6 +27,7 @@ def get_p_mid(index_list, n):
 class DailySummary:
     ut: int
     symbol: str
+    name: str
     share_volume: int
     trade_volume: int
     price_previous_close: float
@@ -64,6 +65,7 @@ class DailySummary:
         return DailySummary(
             ut=ut,
             symbol=d['symbol'],
+            name=d['name'],
             share_volume=String(d['share_volume']).int,
             trade_volume=String(d['trade_volume']).int,
             price_previous_close=String(d['price_previous_close']).float,
@@ -76,6 +78,7 @@ class DailySummary:
     def to_dict(self):
         return {
             'ut': self.ut,
+            'name': self.name,
             'symbol': self.symbol,
             'share_volume': self.share_volume,
             'trade_volume': self.trade_volume,

@@ -51,7 +51,7 @@ class CSEWebsiteDailySummary:
                 continue
             
             [
-                _,  # name,
+                name,
                 symbol,
                 share_volume,
                 trade_volume,
@@ -73,6 +73,7 @@ class CSEWebsiteDailySummary:
                 DailySummary(
                     ut=ut,
                     symbol=symbol,
+                    name=name,
                     share_volume=String(share_volume).int,
                     trade_volume=String(trade_volume).int,
                     price_previous_close=String(price_previous_close).float,
