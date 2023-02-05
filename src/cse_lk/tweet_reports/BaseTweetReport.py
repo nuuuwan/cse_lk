@@ -9,6 +9,8 @@ class BaseTweetReport:
     @property
     def tweet_text(self):
         return f'''{self.tweet_text_custom}
+
+data: www.cse.lk
 #CSE #SriLanka #LKA @CSE_Media'''
 
     @property
