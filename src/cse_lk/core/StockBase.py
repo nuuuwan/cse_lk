@@ -19,7 +19,6 @@ class StockBase:
         name_short = name_short.strip()
         return name_short.title()
 
-
     @cached_property
     def symbol_short(self):
         symbol_short = self.symbol
