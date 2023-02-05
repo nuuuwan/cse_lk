@@ -25,9 +25,9 @@ class DailySummary:
         return self.price_last_traded - self.price_previous_close
 
     @staticmethod
-    def from_dict(ut: int, d: dict):
+    def from_dict(d: dict):
         return DailySummary(
-            ut=ut,
+            ut=String(d['ut']).int,
             symbol=d['symbol'],
             name=d['name'],
             share_volume=String(d['share_volume']).int,

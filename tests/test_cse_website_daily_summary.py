@@ -1,9 +1,9 @@
 from unittest import TestCase, skip
 
 from bs4 import BeautifulSoup
-from utils import File
+from utils import File, TSVFile
 
-from cse_lk import CSEWebsiteDailySummary
+from cse_lk import CSEWebsiteDailySummary, DailySummary
 
 TEST_CSEWDS_HTML_ONLY = CSEWebsiteDailySummary()
 
@@ -52,4 +52,16 @@ class TestCSEWebsiteDailySummary(TestCase):
         self.assertEqual(
             daily_summary_list[0].to_dict(),
             TEST_DAILY_SUMMARY_AS_DICT,
+        )
+
+    def test_parse_and_save(self):
+        TEST_CSEWDS_NOT_HTML.parse_and_save()
+        daily_summary_file_path = '/tmp/cse_lk.daily_summary.20230203.tsv'
+        d_list = TSVFile(daily_summary_file_path).read()
+
+        daily_summary_list = [DailySummary.from_dict(d) for d in d_list]
+
+        self.assertEqual(
+            daily_summary_list,
+            TEST_CSEWDS_NOT_HTML.daily_summary_list,
         )
