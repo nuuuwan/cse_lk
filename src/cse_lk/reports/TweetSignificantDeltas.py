@@ -18,7 +18,6 @@ class TweetSignificantDeltas(Tweet):
 
         inner_lines = ['']
         for stock in significant_stock_list:
-
             if len('\n'.join(inner_lines)) > MAX_CHARS_INNER_LINES:
                 break
 

@@ -62,5 +62,4 @@ class AnalyzeCorrelation:
 
 
 if __name__ == '__main__':
-
     AnalyzeCorrelation().do()
