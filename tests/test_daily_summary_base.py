@@ -16,7 +16,7 @@ TEST_DAILY_SUMMARY = DailySummary(
 )
 
 
-class TestDailySummary(TestCase):
+class TestDailySummaryBase(TestCase):
     def test_date(self):
         self.assertEqual(
             TEST_DAILY_SUMMARY.date,

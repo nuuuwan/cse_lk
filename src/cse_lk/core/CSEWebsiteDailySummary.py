@@ -1,15 +1,17 @@
 import os
+from functools import cached_property
 
 from bs4 import BeautifulSoup
 from utils import (TIME_FORMAT_DATE_ID, Browser, Log, String, Time, TimeFormat,
                    TSVFile)
 
+from cse_lk.core.CommonMixin import CommonMixin
 from cse_lk.core.DailySummary import DailySummary
 
 log = Log('CSEWebsiteDailySummary')
 
 
-class CSEWebsiteDailySummary:
+class CSEWebsiteDailySummary(CommonMixin):
     URL = os.path.join(
         'https://www.cse.lk',
         'pages',
@@ -62,16 +64,30 @@ class CSEWebsiteDailySummary:
             price_last_traded=String(price_last_traded).float,
         )
 
-    @property
-    def daily_summary_list(self):
+    @cached_property
+    def ut(self):
         soup = BeautifulSoup(self.html, 'html.parser')
         span_updated_time = soup.find('span', class_='updated-time')
-        ut = (
+        return (
             TimeFormat('MARKET STATISTICS AS OF %b %d, %Y, %I:%M:%S %p')
             .parse(span_updated_time.text.strip())
             .ut
         )
 
+    @cached_property
+    def date_id(self):
+        return TIME_FORMAT_DATE_ID.stringify(Time(self.ut))
+
+    @cached_property
+    def daily_summary_list_path(self):
+        return CSEWebsiteDailySummary.get_daily_summary_list_path(
+            self.date_id
+        )
+
+    @cached_property
+    def daily_summary_list(self):
+        ut = self.ut
+        soup = BeautifulSoup(self.html, 'html.parser')
         daily_summary_list = []
         for i_row, tr_company_row in enumerate(soup.find_all('tr')):
             if i_row == 0:
@@ -83,12 +99,8 @@ class CSEWebsiteDailySummary:
 
     def parse_and_save(self):
         daily_summary_list = self.daily_summary_list
-        ut = daily_summary_list[0].ut
-        date_id = TIME_FORMAT_DATE_ID.stringify(Time(ut))
-        daily_summary_file_path = f'/tmp/cse_lk.daily_summary.{date_id}.tsv'
-
         d_list = [d.to_dict() for d in daily_summary_list]
 
-        TSVFile(daily_summary_file_path).write(d_list)
+        TSVFile(self.daily_summary_list_path).write(d_list)
         n = len(daily_summary_list)
-        log.info(f'Wrote {n} rows to {daily_summary_file_path}')
+        log.info(f'Wrote {n} rows to {self.daily_summary_list_path}')
