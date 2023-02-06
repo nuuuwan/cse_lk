@@ -42,7 +42,7 @@ class TestMonthlyMovers(TestCase):
         self.assertEqual(lines[-2], 'data: www.cse.lk')
         self.assertEqual(lines[-1], '#CSE #SriLanka #LKA @CSE_Media')
 
-    # @skip('needs twitter API keys')
+    @skip('needs twitter API keys')
     def test_send(self):
         TEST_REPORT.send_test()
         TEST_REPORT_LOSERS.send_test()
