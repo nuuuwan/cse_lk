@@ -36,7 +36,7 @@ class TestCSEWebsiteDailySummary(TestCase):
         self.assertEqual(html[:20], '<html class=" eventl')
 
     def test_parse_row(self):
-        soup = BeautifulSoup(TEST_CSEWDS_HTML_ONLY.html, 'html.parser')
+        soup = BeautifulSoup(TEST_CSEWDS_NOT_HTML.html, 'html.parser')
         tr_company_row = soup.find_all('tr')[1]
         daily_summary = TEST_CSEWDS_NOT_HTML._parse_row(
             tr_company_row=tr_company_row, ut=1675407195.0
