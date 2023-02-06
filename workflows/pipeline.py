@@ -1,4 +1,6 @@
+from utils import Log
 from cse_lk import CSEWebsiteDailySummary, MonthlyMovers
+log = Log('cse_lk')
 
 if __name__ == '__main__':
     CSEWebsiteDailySummary().parse_and_save()
@@ -8,5 +10,5 @@ if __name__ == '__main__':
         MonthlyMovers('losers', 4).send()
         MonthlyMovers('gainers', 12).send()
         MonthlyMovers('losers', 12).send()
-    except BaseException:
-        pass
+    except BaseException as e:
+        log.error(e)
